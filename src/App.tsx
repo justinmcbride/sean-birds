@@ -19,6 +19,7 @@ import { BirdIcon, CopyIcon } from "@phosphor-icons/react";
 
 import { convertToHTML, sortBirdList, type Bird } from "./lib/utils";
 import { SAMPLE_DATA } from "./sample-data";
+import { GitHubLink } from "./GitHubLink";
 
 function App() {
   const [text, setText] = useState("");
@@ -225,6 +226,8 @@ function App() {
           </Tabs>
         </Paper>
       </Group>
+      
+      <GitHubLink />
     </Stack>
   );
 }
