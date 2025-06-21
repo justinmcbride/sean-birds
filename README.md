@@ -1,54 +1,34 @@
-# React + TypeScript + Vite
+# Sean's Bird List Sorter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application that helps organize bird observation lists for easy use in Microsoft Word documents.
 
-Currently, two official plugins are available:
+## What it does
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This tool takes a comma-separated list of birds with their scientific names and:
 
-## Expanding the ESLint configuration
+1. **Parses** the bird names and scientific names from your input
+2. **Sorts** them alphabetically by scientific name
+3. **Formats** them with proper italicization for scientific names
+4. **Generates** HTML output that's compatible with Microsoft Word
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## How to use
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+1. Enter your bird list in the input field (format: "Common Name (Scientific Name)")
+2. The tool automatically sorts and formats your list
+3. Preview the formatted output in the Preview tab
+4. Click "Copy to Clipboard for MS Word" to copy the formatted HTML
+5. Paste directly into Microsoft Word - the scientific names will be properly italicized
+
+## Example
+
+**Input:**
+```
+house finch (Carpodacus mexicanus), Anna's hummingbird (Calypte anna), red-tailed hawk (Buteo lineatus)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+**Output:**
 ```
+Anna's hummingbird (Calypte anna), red-tailed hawk (Buteo lineatus), house finch (Carpodacus mexicanus)
+```
+
+Perfect for bird watchers, researchers, and anyone who needs to create properly formatted bird lists for reports or documentation.
