@@ -32,6 +32,7 @@ function App() {
   useEffect(() => {
     if (!text.trim()) {
       setHtmlContent("");
+      setBirdList([]);
       return;
     }
 
@@ -48,6 +49,7 @@ function App() {
       });
       // Keep the unsorted text in the output if there's an error
       setHtmlContent("");
+      setBirdList([]);
     }
   }, [text]);
 
@@ -121,7 +123,7 @@ function App() {
 
       <Group align="stretch" justify="center" gap="xl" grow>
         <Paper shadow="md" p="lg" radius="md" withBorder>
-          <Paper withBorder={false} p="lg" mb="md">
+          <Paper withBorder={false} shadow="xs" p="lg" mb="md">
             <Title order={3} td="underline">
               Input
             </Title>
@@ -147,7 +149,7 @@ function App() {
         </Paper>
 
         <Paper shadow="md" p="lg" radius="md" withBorder>
-          <Paper withBorder={false} p="lg" mb="md">
+          <Paper withBorder={false} shadow="xs" p="lg" mb="md">
             <Title order={3} td="underline">
               Output
             </Title>
