@@ -2,7 +2,16 @@ import "./App.css";
 
 import { useEffect, useRef, useState } from "react";
 
-import { Button, Card, Code, Group, Stack, Textarea, Title } from "@mantine/core";
+import {
+  Accordion,
+  Button,
+  Card,
+  Code,
+  Group,
+  Stack,
+  Textarea,
+  Title,
+} from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { BirdIcon, CopyIcon } from "@phosphor-icons/react";
 
@@ -12,6 +21,9 @@ function App() {
   const [text, setText] = useState("");
   const [htmlContent, setHtmlContent] = useState("");
   const [birdList, setBirdList] = useState<Bird[]>([]);
+  const [longestCommonName, setLongestCommonName] = useState<string>("");
+  const [longestScientificName, setLongestScientificName] =
+    useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Auto-sort the text whenever it changes
@@ -35,6 +47,29 @@ function App() {
       setHtmlContent("");
     }
   }, [text]);
+
+  useEffect(() => {
+    // Find the longest names of the birds
+    if (birdList.length > 0) {
+      const longestCommon = birdList.reduce((longest, bird) => {
+        return bird.commonName.length > longest.length
+          ? bird.commonName
+          : longest;
+      }, "");
+      setLongestCommonName(longestCommon);
+
+      // Find the longest scientific name
+      const longestScientific = birdList.reduce((longest, bird) => {
+        return bird.scientificName.length > longest.length
+          ? bird.scientificName
+          : longest;
+      }, "");
+      setLongestScientificName(longestScientific);
+    } else {
+      setLongestCommonName("");
+      setLongestScientificName("");
+    }
+  }, [birdList]);
 
   // Handle text changes in the editor
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -83,14 +118,20 @@ function App() {
         <Card.Section>
           <Title order={3}>Input</Title>
         </Card.Section>
-        <Textarea
-          ref={textareaRef}
-          rows={7}
-          placeholder="Enter your comma-separated bird list here..."
-          className="font-mono"
-          value={text}
-          onChange={handleTextChange}
-        />
+        <Card.Section>
+          <Textarea
+            ref={textareaRef}
+            rows={7}
+            placeholder="Enter your comma-separated bird list here..."
+            className="font-mono"
+            value={text}
+            onChange={handleTextChange}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck="false"
+          />
+        </Card.Section>
       </Card>
 
       <Card shadow="md" padding="lg" radius="md" withBorder>
@@ -107,17 +148,40 @@ function App() {
           disabled={!htmlContent}
         >
           <CopyIcon size={16} />
-          Copy HTML to Clipboard
+          Copy to Clipboard for MS Word
         </Button>
 
         <Card.Section>
-          <Title order={4} mt="md">
-            Preview
-          </Title>
-          <Group justify="center" gap="sm" grow>
-            <iframe srcDoc={htmlContent} />
-            <Code block>{htmlContent}</Code>
-          </Group>
+          <Accordion defaultValue={["preview"]} multiple={true}>
+            <Accordion.Item key="preview" value="preview">
+              <Accordion.Control icon="🦜" disabled={!birdList.length}>
+                Preview
+              </Accordion.Control>
+              <Accordion.Panel>
+                <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+              </Accordion.Panel>
+            </Accordion.Item>
+            <Accordion.Item key="raw" value="raw">
+              <Accordion.Control icon="📋" disabled={!birdList.length}>
+                Raw HTML Code
+              </Accordion.Control>
+              <Accordion.Panel>
+                <Code block>{htmlContent}</Code>
+              </Accordion.Panel>
+            </Accordion.Item>
+            <Accordion.Item key="data" value="data">
+              <Accordion.Control icon="📊" disabled={!birdList.length}>
+                Bird Data Fun Facts
+              </Accordion.Control>
+              <Accordion.Panel>
+                Number of birds: {birdList.length}
+                <br />
+                Longest common name: {longestCommonName}
+                <br />
+                Longest scientific name: {longestScientificName}
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion>
         </Card.Section>
       </Card>
     </Stack>
