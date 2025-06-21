@@ -2,15 +2,16 @@ import "./App.css";
 
 import { useEffect, useRef, useState } from "react";
 
-import { CopyIcon } from "@phosphor-icons/react";
-import { Button, Card, Stack, Textarea } from "@mantine/core";
+import { Button, Card, Code, Group, Stack, Textarea, Title } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
+import { BirdIcon, CopyIcon } from "@phosphor-icons/react";
 
-import { convertToHTML, sortBirdList } from "./lib/utils";
+import { convertToHTML, sortBirdList, type Bird } from "./lib/utils";
 
 function App() {
   const [text, setText] = useState("");
   const [htmlContent, setHtmlContent] = useState("");
+  const [birdList, setBirdList] = useState<Bird[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Auto-sort the text whenever it changes
@@ -22,6 +23,7 @@ function App() {
 
     try {
       const sorted = sortBirdList(text);
+      setBirdList(sorted);
       setHtmlContent(convertToHTML(sorted));
     } catch (err) {
       notifications.show({
@@ -71,11 +73,15 @@ function App() {
 
   return (
     <Stack align="stretch" justify="center" gap="xl">
-      <h2 className="text-2xl font-bold">Sean's Bird List Sorter</h2>
+      <Group justify="center" align="center">
+        <BirdIcon size={32} />
+        <Title order={1}>Sean's Bird List Sorter</Title>
+        <BirdIcon size={32} />
+      </Group>
 
       <Card shadow="md" padding="lg" radius="md" withBorder>
         <Card.Section>
-          <h3 className="text-lg font-semibold">Input</h3>
+          <Title order={3}>Input</Title>
         </Card.Section>
         <Textarea
           ref={textareaRef}
@@ -89,7 +95,7 @@ function App() {
 
       <Card shadow="md" padding="lg" radius="md" withBorder>
         <Card.Section>
-          <h3 className="text-lg font-semibold">Output</h3>
+          <Title order={3}>Output</Title>
         </Card.Section>
 
         <Button
@@ -104,7 +110,15 @@ function App() {
           Copy HTML to Clipboard
         </Button>
 
-        <iframe srcDoc={htmlContent} />
+        <Card.Section>
+          <Title order={4} mt="md">
+            Preview
+          </Title>
+          <Group justify="center" gap="sm" grow>
+            <iframe srcDoc={htmlContent} />
+            <Code block>{htmlContent}</Code>
+          </Group>
+        </Card.Section>
       </Card>
     </Stack>
   );
