@@ -3,15 +3,15 @@ import "./App.css";
 import { useEffect, useRef, useState } from "react";
 
 import {
-  Accordion,
   Button,
-  Card,
   Code,
   Divider,
   Group,
+  Paper,
   Stack,
+  Tabs,
   Textarea,
-  Title
+  Title,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { BirdIcon, CopyIcon } from "@phosphor-icons/react";
@@ -95,7 +95,7 @@ function App() {
       await navigator.clipboard.write([clipboardItem]);
       notifications.show({
         title: "Copied",
-        color: "theme.primaryColor.0",
+        color: "grape",
         message: "HTML content copied to clipboard!",
         position: "top-right",
       });
@@ -120,12 +120,14 @@ function App() {
       </Group>
 
       <Group align="stretch" justify="center" gap="xl" grow>
-        <Card shadow="md" padding="lg" radius="md" withBorder>
-          <Card.Section inheritPadding py="lg" bg="theme.primaryColor.0">
-            <Title order={3} td="underline">Input</Title>
-          </Card.Section>
-          <Divider />
-          <Card.Section inheritPadding>
+        <Paper shadow="md" p="lg" radius="md" withBorder>
+          <Paper withBorder={false} p="lg" mb="md">
+            <Title order={3} td="underline">
+              Input
+            </Title>
+          </Paper>
+          <Divider mb="md" />
+          <Stack gap="md">
             <Textarea
               ref={textareaRef}
               rows={7}
@@ -138,59 +140,76 @@ function App() {
               autoCapitalize="off"
               spellCheck="false"
             />
-            <Button variant="default" onClick={() => setText(SAMPLE_DATA)}>Sample Birds</Button>
-          </Card.Section>
-        </Card>
+            <Button variant="default" onClick={() => setText(SAMPLE_DATA)}>
+              Sample Birds
+            </Button>
+          </Stack>
+        </Paper>
 
-        <Card shadow="md" padding="lg" radius="md" withBorder>
-          <Card.Section>
-            <Title order={3} td="underline">Output</Title>
-          </Card.Section>
+        <Paper shadow="md" p="lg" radius="md" withBorder>
+          <Paper withBorder={false} p="lg" mb="md">
+            <Title order={3} td="underline">
+              Output
+            </Title>
+          </Paper>
+
+          <Divider mb="md" />
 
           <Button
-            fullWidth
             mt="md"
+            mb="md"
             radius="md"
             onClick={copyToClipboard}
             disabled={!htmlContent}
+            leftSection={<CopyIcon size={24} />}
           >
-            <CopyIcon size={16} />
             Copy to Clipboard for MS Word
           </Button>
 
-          <Card.Section>
-            <Accordion defaultValue={["preview"]} multiple={true}>
-              <Accordion.Item key="preview" value="preview">
-                <Accordion.Control icon="🦜" disabled={!birdList.length}>
-                  Preview
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-                </Accordion.Panel>
-              </Accordion.Item>
-              <Accordion.Item key="raw" value="raw">
-                <Accordion.Control icon="📋" disabled={!birdList.length}>
-                  Raw HTML Code
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <Code block>{htmlContent}</Code>
-                </Accordion.Panel>
-              </Accordion.Item>
-              <Accordion.Item key="data" value="data">
-                <Accordion.Control icon="📊" disabled={!birdList.length}>
-                  Bird Data Fun Facts
-                </Accordion.Control>
-                <Accordion.Panel>
-                  Number of birds: {birdList.length}
-                  <br />
-                  Longest common name: {longestCommonName}
-                  <br />
-                  Longest scientific name: {longestScientificName}
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
-          </Card.Section>
-        </Card>
+          <Divider mb="md" />
+
+          <Tabs defaultValue="preview">
+            <Tabs.List>
+              <Tabs.Tab
+                value="preview"
+                leftSection="🦜"
+                disabled={!birdList.length}
+              >
+                Preview
+              </Tabs.Tab>
+              <Tabs.Tab
+                value="raw"
+                leftSection="📋"
+                disabled={!birdList.length}
+              >
+                Raw HTML Code
+              </Tabs.Tab>
+              <Tabs.Tab
+                value="data"
+                leftSection="📊"
+                disabled={!birdList.length}
+              >
+                Bird Data Fun Facts
+              </Tabs.Tab>
+            </Tabs.List>
+
+            <Tabs.Panel value="preview">
+              <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+            </Tabs.Panel>
+
+            <Tabs.Panel value="raw">
+              <Code block>{htmlContent}</Code>
+            </Tabs.Panel>
+
+            <Tabs.Panel value="data">
+              Number of birds: {birdList.length}
+              <br />
+              Longest common name: {longestCommonName}
+              <br />
+              Longest scientific name: {longestScientificName}
+            </Tabs.Panel>
+          </Tabs>
+        </Paper>
       </Group>
     </Stack>
   );
