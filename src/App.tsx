@@ -9,6 +9,7 @@ import {
   Group,
   Paper,
   Stack,
+  Table,
   Tabs,
   Textarea,
   Title,
@@ -118,11 +119,11 @@ function App() {
       <Group justify="center" align="center">
         <BirdIcon size={32} />
         <Title order={1}>Sean's Bird List Sorter</Title>
-        <BirdIcon size={32} />
+        <BirdIcon size={32} style={{ transform: 'scaleX(-1)' }} />
       </Group>
 
       <Group align="stretch" justify="center" gap="xl" grow>
-        <Paper shadow="md" p="lg" radius="md" withBorder>
+        <Paper shadow="md" p="lg" radius="md" withBorder style={{ minHeight: '550px' }}>
           <Paper withBorder={false} shadow="xs" p="lg" mb="md">
             <Title order={3} td="underline">
               Input
@@ -148,7 +149,7 @@ function App() {
           </Stack>
         </Paper>
 
-        <Paper shadow="md" p="lg" radius="md" withBorder>
+        <Paper shadow="md" p="lg" radius="md" withBorder style={{ minHeight: '550px' }}>
           <Paper withBorder={false} shadow="xs" p="lg" mb="md">
             <Title order={3} td="underline">
               Output
@@ -195,20 +196,31 @@ function App() {
               </Tabs.Tab>
             </Tabs.List>
 
-            <Tabs.Panel value="preview">
+            <Tabs.Panel value="preview" pt="sm">
               <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
             </Tabs.Panel>
 
-            <Tabs.Panel value="raw">
+            <Tabs.Panel value="raw" pt="sm">
               <Code block>{htmlContent}</Code>
             </Tabs.Panel>
 
-            <Tabs.Panel value="data">
-              Number of birds: {birdList.length}
-              <br />
-              Longest common name: {longestCommonName}
-              <br />
-              Longest scientific name: {longestScientificName}
+            <Tabs.Panel value="data" pt="sm">
+              <Table variant="vertical" layout="fixed" withTableBorder>
+                <Table.Tbody>
+                  <Table.Tr>
+                    <Table.Th fw={500}>Number of birds:</Table.Th>
+                    <Table.Td>{birdList.length}</Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Th fw={500}>Longest common name:</Table.Th>
+                    <Table.Td>{longestCommonName}</Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Th fw={500}>Longest scientific name:</Table.Th>
+                    <Table.Td>{longestScientificName}</Table.Td>
+                  </Table.Tr>
+                </Table.Tbody>
+              </Table>
             </Tabs.Panel>
           </Tabs>
         </Paper>
