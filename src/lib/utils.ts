@@ -50,11 +50,7 @@ export function sortBirdList(input: string): Bird[] {
 
 // Convert text with formatting markers to HTML format for MS Word compatibility
 export function convertToHTML(birds: Bird[]): string {
-  let html = "<!DOCTYPE html>\n<html>\n<head>\n";
-  html += '<meta charset="utf-8">\n';
-  html += '</head>\n<body style="font-family: Arial, sans-serif;">\n';
-
-  html += "<p>";
+  let html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>\n<p>`;
 
   html += birds
     .map((bird) => {
@@ -64,8 +60,7 @@ export function convertToHTML(birds: Bird[]): string {
       return bird.original;
     })
     .join(", ");
-  html += "</p>\n";
 
-  html += "</body>\n</html>";
+  html += `</p>\n</body></html>`;
   return html;
 }

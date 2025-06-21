@@ -41,6 +41,7 @@ function App() {
       notifications.show({
         title: "Error",
         color: "red",
+        position: "top-right",
         message: "HTML content could not be generated! " + String(err),
       });
       // Keep the unsorted text in the output if there's an error
@@ -94,6 +95,7 @@ function App() {
         title: "Copied",
         color: "green",
         message: "HTML content copied to clipboard!",
+        position: "top-right",
       });
     } catch {
       void navigator.clipboard.writeText(htmlContent);
@@ -102,6 +104,7 @@ function App() {
         color: "yellow",
         message:
           "Raw content copied to clipboard! This might not be what you want",
+        position: "top-right",
       });
     }
   };
